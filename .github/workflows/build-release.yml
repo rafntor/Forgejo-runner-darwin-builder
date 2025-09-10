@@ -165,7 +165,7 @@ jobs:
           tag_name: ${{ inputs.tag }}
           files: forgejo-runner-windows-*/forgejo-runner-windows-*.exe
           draft: ${{ needs.test.result == 'success' }}
-          prerelease: ${{ contains(input.tag, 'beta') || contains(input.tag, 'alpha') }}
+          prerelease: ${{ contains(inputs.tag, 'beta') || contains(inputs.tag, 'alpha') }}
           token: ${{ secrets.RELEASE_TOKEN }}
           fail_on_unmatched_files: true
           body: See [original release notes](https://code.forgejo.org/forgejo/runner/releases/tag/${{ inputs.tag }}).
