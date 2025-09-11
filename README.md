@@ -1,10 +1,10 @@
-# Forgejo-runner-windows-built
+# Forgejo-runner-windows-builder
 
-[![License](https://img.shields.io/github/license/Crown0815/Forgejo-runner-windows-built)](https://github.com/Crown0815/Forgejo-runner-windows-built/blob/main/LICENSE)
-[![Release](https://img.shields.io/github/v/release/Crown0815/Forgejo-runner-windows-built)](https://github.com/Crown0815/Forgejo-runner-windows-built/releases)
-[![Issues](https://img.shields.io/github/issues/Crown0815/Forgejo-runner-windows-built)](https://github.com/Crown0815/Forgejo-runner-windows-built/issues)
+[![License](https://img.shields.io/github/license/Crown0815/Forgejo-runner-windows-builder)](https://github.com/Crown0815/Forgejo-runner-windows-builder/blob/main/LICENSE)
+[![Release](https://img.shields.io/github/v/release/Crown0815/Forgejo-runner-windows-builder)](https://github.com/Crown0815/Forgejo-runner-windows-builder/releases)
+[![Issues](https://img.shields.io/github/issues/Crown0815/Forgejo-runner-windows-builder)](https://github.com/Crown0815/Forgejo-runner-windows-builder/issues)
 [![Forgejo Version](https://img.shields.io/badge/Forgejo-1.22+-blue)](https://forgejo.org)
-[![Windows](https://img.shields.io/badge/Platform-Windows-blue)](https://github.com/Crown0815/Forgejo-runner-windows-built)
+[![Windows](https://img.shields.io/badge/Platform-Windows-blue)](https://github.com/Crown0815/Forgejo-runner-windows-builder)
 
 A Windows-compiled version of the Forgejo Runner, providing a pre-built binary for executing Forgejo Actions workflows on Windows systems. 
 This repository offers convenient downloads for users seeking a straightforward installation without the need for manual compilation.
@@ -45,7 +45,7 @@ It is a build of the official [Forgejo Runner source code](https://code.forgejo.
 ## Installation and Usage
 
 1. **Download the Binary**:
-    - Visit the [Releases page](https://github.com/Crown0815/Forgejo-runner-windows-built/releases) to download the latest Windows executable (e.g., `forgejo-runner.exe`).
+    - Visit the [Releases page](https://github.com/Crown0815/Forgejo-runner-windows-builder/releases) to download the latest Windows executable (e.g., `forgejo-runner.exe`).
 
 2. **Configure the Runner**:
     - Follow the [official documentation](https://forgejo.org/docs/latest/admin/actions/runner-installation/) for runner configuration.
