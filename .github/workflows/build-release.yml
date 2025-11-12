@@ -149,6 +149,7 @@ jobs:
           FORGEJO_URL: ${{ env.FORGEJO_ROOT_URL }}
           FORGEJO_RUNNER_SECRET: ${{ env.FORGEJO_RUNNER_SECRET }}
           FORGEJO_RUNNER_HEX_SECRET: ${{ env.FORGEJO_RUNNER_SECRET }}
+          ACT_REPOSITORY: ${{ inputs.goal == 'test-fork' && vars.TEST_FORK || 'forgejo/runner' }}  # Needed for TestRunContext_GetBindsAndMounts test case
 
   release:
     runs-on: ubuntu-latest
