@@ -1,5 +1,5 @@
 # This workflow:
-#  - builds and uploads a binary artifact for each Windows architecture
+#  - builds and uploads a binary artifact for Windows amd64
 #  - tests the runner on Windows with a Forgejo server container running on Windows Subsystem for Linux (WSL)
 #  - releases the binary artifacts as a GitHub release
 
@@ -25,17 +25,8 @@ on:
 
 jobs:
   build:
-    name: Build ${{ matrix.architecture }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        include:
-          - architecture: '386'
-            os: windows-latest
-          - architecture: amd64
-            os: windows-latest
-          - architecture: arm64
-            os: windows-11-arm
+    name: Build
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
         with:
@@ -44,17 +35,17 @@ jobs:
           ref: ${{ inputs.tag }}
           token: ${{ secrets.CODE_FORGEJO_TOKEN }}
 
-      - name: Build for ${{ matrix.architecture }}
+      - name: Build for amd64
         run: |
           $env:GOOS = 'windows'
-          $env:GOARCH = '${{ matrix.architecture }}'
+          $env:GOARCH = 'amd64'
           go build `
             -ldflags "-s -w -X code.forgejo.org/forgejo/runner/v12/internal/pkg/ver.version=${{ inputs.tag }}" `
-            -o forgejo-runner-windows-${{ matrix.architecture }}.exe
+            -o forgejo-runner-windows-amd64.exe
 
       - name: Check Version Output
         run: |
-          $VERSION_OUTPUT = & .\forgejo-runner-windows-${{ matrix.architecture }}.exe --version
+          $VERSION_OUTPUT = & .\forgejo-runner-windows-amd64.exe --version
           if ($VERSION_OUTPUT -ne 'forgejo-runner version ${{ inputs.tag }}') {
             Write-Output "Version mismatch: got $VERSION_OUTPUT expected forgejo-runner version ${{ inputs.tag }}"
             exit 1
@@ -62,8 +53,8 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: forgejo-runner-windows-${{ matrix.architecture }}
-          path: forgejo-runner-windows-${{ matrix.architecture }}.exe
+          name: forgejo-runner-windows-amd64
+          path: forgejo-runner-windows-amd64.exe
 
   test-runner:
     name: Run Tests on Windows with Linux Forgejo Server
