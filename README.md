@@ -1,13 +1,12 @@
-# Forgejo-runner-windows-builder
+# Forgejo-runner-darwin-builder
 
-[![License](https://img.shields.io/github/license/Crown0815/Forgejo-runner-windows-builder)](https://github.com/Crown0815/Forgejo-runner-windows-builder/blob/main/LICENSE)
-[![Release](https://img.shields.io/github/v/release/Crown0815/Forgejo-runner-windows-builder)](https://github.com/Crown0815/Forgejo-runner-windows-builder/releases)
-[![Issues](https://img.shields.io/github/issues/Crown0815/Forgejo-runner-windows-builder)](https://github.com/Crown0815/Forgejo-runner-windows-builder/issues)
+[![License](https://img.shields.io/github/license/rafntor/Forgejo-runner-darwin-builder)](https://github.com/rafntor/Forgejo-runner-darwin-builder/blob/main/LICENSE)
+[![Release](https://img.shields.io/github/v/release/rafntor/Forgejo-runner-darwin-builder)](https://github.com/rafntor/Forgejo-runner-darwin-builder/releases)
+[![Issues](https://img.shields.io/github/issues/rafntor/Forgejo-runner-darwin-builder)](https://github.com/rafntor/Forgejo-runner-darwin-builder/issues)
 [![Forgejo Version](https://img.shields.io/badge/Forgejo-1.22+-blue)](https://forgejo.org)
-[![Windows](https://img.shields.io/badge/Platform-Windows-blue)](https://github.com/Crown0815/Forgejo-runner-windows-builder)
+[![macOS](https://img.shields.io/badge/Platform-macOS-blue)](https://github.com/rafntor/Forgejo-runner-darwin-builder)
 
-A Windows-compiled version of the Forgejo Runner, providing a pre-built binary for executing Forgejo Actions workflows on Windows systems. 
-This repository offers convenient downloads for users seeking a straightforward installation without the need for manual compilation.
+A macOS-compiled version of the Forgejo Runner, providing a pre-built binary for executing Forgejo Actions workflows on macOS systems (10.15+).
 
 ## What is Forgejo?
 
@@ -33,7 +32,7 @@ This enables continuous integration and deployment (CI/CD) pipelines, automated 
 The official runner supports Linux only and can be configured to use various execution modes such as containerized (e.g., Docker) or host-based environments. 
 It fetches workflows from the Forgejo server, executes steps defined in YAML files, and handles artifacts, logs, and status updates.
 
-This repository provides a **pre-compiled Windows binary** of the Forgejo Runner, simplifying setup for Windows users.
+This repository provides a **pre-compiled macOS binary** of the Forgejo Runner, simplifying setup for macOS users.
 It is a build of the official [Forgejo Runner source code](https://code.forgejo.org/forgejo/runner) repository, with **no modifications of the source tree**.
 
 ### Key Features of the Forgejo Runner
@@ -45,18 +44,21 @@ It is a build of the official [Forgejo Runner source code](https://code.forgejo.
 ## Installation and Usage
 
 1. **Download the Binary**:
-    - Visit the [Releases page](https://github.com/Crown0815/Forgejo-runner-windows-builder/releases) to download the latest Windows executable (e.g., `forgejo-runner.exe`).
+    - Visit the [Releases page](https://github.com/rafntor/Forgejo-runner-darwin-builder/releases) to download the latest macOS executable (e.g., `forgejo-runner-darwin-amd64`).
 
-2. **Configure the Runner**:
+2. **Make Executable**:
+    - Run `chmod +x forgejo-runner-darwin-amd64` to make the binary executable.
+
+3. **Configure the Runner**:
     - Follow the [official documentation](https://forgejo.org/docs/latest/admin/actions/runner-installation/) for runner configuration.
 
-3. **Configure as a Service** (Optional, for persistent operation):
-    - Use Windows Task Scheduler or a third-party tool to run the daemon as a background service.
-4. **Verify Registration**:
+4. **Configure as a Service** (Optional, for persistent operation):
+    - Use launchd or a third-party tool to run the daemon as a background service.
+5. **Verify Registration**:
     - Return to your Forgejo instance's Actions settings to confirm the runner appears online and is available for jobs.
 
 5. **Running Workflows**:
-    - In your repository, create `.forgejo/workflows/your-workflow.yml` files defining jobs that target Windows (e.g., using `runs-on: [self-hosted, windows]` labels).
+    - In your repository, create `.forgejo/workflows/your-workflow.yml` files defining jobs that target macOS (e.g., using `runs-on: [self-hosted, macOS]` labels).
     - Trigger a workflow (e.g., via push or manual dispatch) and monitor execution in the Actions tab.
 
 For additional configuration, such as enabling Docker support or custom environment variables, consult the [official documentation](https://forgejo.org/docs/latest/admin/actions/runner-installation/).
@@ -65,7 +67,6 @@ For additional configuration, such as enabling Docker support or custom environm
 - Ensure the runner has network access to your Forgejo instance.
 - Check logs in the `--logdir` (if specified) for errors.
 - If registration fails, verify the token's validity and instance URL.
-- Windows-specific issues may involve antivirus software interfering with executables; add exceptions as needed.
 
 ## Relevant Resources
 
@@ -95,4 +96,4 @@ Here is a curated list of links to official and helpful resources for Forgejo, t
 ## Contributing
 
 Contributions to improve documentation or binaries are welcome via pull requests. 
-For issues specific to this Windows build, open a new issue in this repository.
+For issues specific to this macOS build, open a new issue in this repository.
