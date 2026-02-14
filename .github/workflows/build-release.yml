@@ -1,5 +1,6 @@
 # This workflow:
-#  - builds and uploads a binary artifact for Windows amd64
+#  - builds and uploads a binary artifact for macOS amd64 (compatible with 10.15+)
+#  - tests act on macOS
 #  - releases the binary artifacts as a GitHub release
 
 name: Build Release
@@ -24,32 +25,40 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: windows-latest
+    runs-on: macos-latest
     steps:
       - name: Checkout code
         run: |
           git clone --depth 1 --branch ${{ inputs.tag }} https://code.forgejo.org/forgejo/runner.git .
 
-      - name: Build for amd64
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Build for macOS amd64
+        env:
+          CGO_ENABLED: 1
+          GOOS: darwin
+          GOARCH: amd64
+          MACOSX_DEPLOYMENT_TARGET: 10.15
         run: |
-          $env:GOOS = 'windows'
-          $env:GOARCH = 'amd64'
-          go build `
-            -ldflags "-s -w -X code.forgejo.org/forgejo/runner/v12/internal/pkg/ver.version=${{ inputs.tag }}" `
-            -o forgejo-runner-windows-amd64.exe
+          go build \
+            -ldflags "-s -w -X code.forgejo.org/forgejo/runner/v12/internal/pkg/ver.version=${{ inputs.tag }}" \
+            -o forgejo-runner-darwin-amd64
 
       - name: Check Version Output
         run: |
-          $VERSION_OUTPUT = & .\forgejo-runner-windows-amd64.exe --version
-          if ($VERSION_OUTPUT -ne 'forgejo-runner version ${{ inputs.tag }}') {
-            Write-Output "Version mismatch: got $VERSION_OUTPUT expected forgejo-runner version ${{ inputs.tag }}"
+          VERSION_OUTPUT=$(./forgejo-runner-darwin-amd64 --version)
+          if [ "$VERSION_OUTPUT" != "forgejo-runner version ${{ inputs.tag }}" ]; then
+            echo "Version mismatch: got $VERSION_OUTPUT expected forgejo-runner version ${{ inputs.tag }}"
             exit 1
-          }
+          fi
 
       - uses: actions/upload-artifact@v4
         with:
-          name: forgejo-runner-windows-amd64
-          path: forgejo-runner-windows-amd64.exe
+          name: forgejo-runner-darwin-amd64
+          path: forgejo-runner-darwin-amd64
 
   test-act:
     name: Run Act Tests on macOS
@@ -88,7 +97,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ inputs.tag }}
-          files: forgejo-runner-windows-*/forgejo-runner-windows-*.exe
+          files: forgejo-runner-darwin-*/forgejo-runner-darwin-*
           draft: ${{ needs.test-act.result != 'success' || inputs.goal != 'release' }}
           prerelease: ${{ contains(inputs.tag, 'beta') || contains(inputs.tag, 'alpha') }}
           fail_on_unmatched_files: true
