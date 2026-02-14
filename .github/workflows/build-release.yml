@@ -20,7 +20,7 @@ on:
         options:
           - release
           - draft
-        default: release
+        default: draft
 
 jobs:
   build:
@@ -149,26 +149,26 @@ jobs:
           FORGEJO_RUNNER_HEX_SECRET: ${{ env.FORGEJO_RUNNER_SECRET }}
 
   test-act:
-    name: Run Act Tests on Windows
-    runs-on: windows-latest
+    name: Run Act Tests on macOS
+    runs-on: macos-latest
 
     steps:
-      - name: Windows - Checkout code
+      - name: macOS - Checkout code
         run: |
           git clone --depth 1 --branch ${{ inputs.tag }} https://code.forgejo.org/forgejo/runner.git .
 
-      - name: Windows - Set up Go
+      - name: macOS - Set up Go
         uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
 
-      - name: Windows - Install dependencies
+      - name: macOS - Install dependencies
         run: go mod download
 
-      - name: Windows - Run tests
+      - name: macOS - Run tests
         run: go test -v ./act/...
         env:
-          ACT_REPOSITORY: forgejo/runner  # Needed for TestRunContext_GetBindsAndMounts test case
+          ACT_REPOSITORY: forgejo/runner
 
   release:
     runs-on: ubuntu-latest
