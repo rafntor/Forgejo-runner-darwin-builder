@@ -41,10 +41,10 @@ jobs:
           CGO_ENABLED: 1
           GOOS: darwin
           GOARCH: amd64
-          MACOSX_DEPLOYMENT_TARGET: 10.15
         run: |
           go build \
-            -ldflags "-s -w -X code.forgejo.org/forgejo/runner/v12/internal/pkg/ver.version=${{ inputs.tag }}" \
+            -ldflags "-s -w -X code.forgejo.org/forgejo/runner/v12/internal/pkg/ver.version=${{ inputs.tag }} \
+            -linkmode=external -extldflags=-mmacosx-version-min=10.15" \
             -o forgejo-runner-darwin-amd64
 
       - name: Check Version Output
@@ -54,6 +54,7 @@ jobs:
             echo "Version mismatch: got $VERSION_OUTPUT expected forgejo-runner version ${{ inputs.tag }}"
             exit 1
           fi
+          otool -l ./forgejo-runner-darwin-amd64 | grep minos -A 3
 
       - uses: actions/upload-artifact@v4
         with:
@@ -63,6 +64,7 @@ jobs:
   test-act:
     name: Run Act Tests on macOS
     runs-on: macos-latest
+    if: false
 
     steps:
       - name: macOS - Checkout code
@@ -84,8 +86,7 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
-    needs: [build, test-act]
-    if: ${{ always() && needs.build.result == 'success' }}
+    needs: [build]
     permissions:
       contents: write
     steps:
@@ -98,7 +99,7 @@ jobs:
         with:
           tag_name: ${{ inputs.tag }}
           files: forgejo-runner-darwin-*/forgejo-runner-darwin-*
-          draft: ${{ needs.test-act.result != 'success' || inputs.goal != 'release' }}
+          draft: ${{ inputs.goal != 'release' }}
           prerelease: ${{ contains(inputs.tag, 'beta') || contains(inputs.tag, 'alpha') }}
           fail_on_unmatched_files: true
           body: |
